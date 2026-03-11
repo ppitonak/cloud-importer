@@ -99,6 +99,7 @@ oci-push:
 
 define tkn_update
 	rm -f tkn/*.yaml
+	sed -e 's%<IMAGE>%$(1)%g' -e 's%<VERSION>%$(2)%g' tkn/template/destroy-aws.yaml > tkn/destroy-aws.yaml
 	sed -e 's%<IMAGE>%$(1)%g' -e 's%<VERSION>%$(2)%g' tkn/template/rhelai-aws.yaml > tkn/rhelai-aws.yaml
 	sed -e 's%<IMAGE>%$(1)%g' -e 's%<VERSION>%$(2)%g' tkn/template/rhelai-azure.yaml > tkn/rhelai-azure.yaml
 	sed -e 's%<IMAGE>%$(1)%g' -e 's%<VERSION>%$(2)%g' tkn/template/snc-aws.yaml > tkn/snc-aws.yaml
@@ -114,6 +115,7 @@ tkn-update:
 .PHONY: tkn-push
 tkn-push: install-out-of-tree-tools
 	$(TOOLS_BINDIR)/tkn bundle push $(TKN_IMG) \
+		-f tkn/destroy-aws.yaml \
 		-f tkn/rhelai-aws.yaml \
 		-f tkn/rehlai-azure.yaml \
 		-f tkn/snc-aws.yaml \
